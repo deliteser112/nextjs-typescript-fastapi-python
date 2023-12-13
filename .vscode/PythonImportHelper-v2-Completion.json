@@ -1,0 +1,190 @@
+[
+    {
+        "label": "FastAPI",
+        "importPath": "fastapi",
+        "description": "fastapi",
+        "isExtraImport": true,
+        "detail": "fastapi",
+        "documentation": {}
+    },
+    {
+        "label": "Depends",
+        "importPath": "fastapi",
+        "description": "fastapi",
+        "isExtraImport": true,
+        "detail": "fastapi",
+        "documentation": {}
+    },
+    {
+        "label": "HTTPException",
+        "importPath": "fastapi",
+        "description": "fastapi",
+        "isExtraImport": true,
+        "detail": "fastapi",
+        "documentation": {}
+    },
+    {
+        "label": "BaseModel",
+        "importPath": "pydantic",
+        "description": "pydantic",
+        "isExtraImport": true,
+        "detail": "pydantic",
+        "documentation": {}
+    },
+    {
+        "label": "CORSMiddleware",
+        "importPath": "fastapi.middleware.cors",
+        "description": "fastapi.middleware.cors",
+        "isExtraImport": true,
+        "detail": "fastapi.middleware.cors",
+        "documentation": {}
+    },
+    {
+        "label": "OAuth2PasswordBearer",
+        "importPath": "fastapi.security",
+        "description": "fastapi.security",
+        "isExtraImport": true,
+        "detail": "fastapi.security",
+        "documentation": {}
+    },
+    {
+        "label": "JWTError",
+        "importPath": "jose",
+        "description": "jose",
+        "isExtraImport": true,
+        "detail": "jose",
+        "documentation": {}
+    },
+    {
+        "label": "jwt",
+        "importPath": "jose",
+        "description": "jose",
+        "isExtraImport": true,
+        "detail": "jose",
+        "documentation": {}
+    },
+    {
+        "label": "List",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "uuid4",
+        "importPath": "uuid",
+        "description": "uuid",
+        "isExtraImport": true,
+        "detail": "uuid",
+        "documentation": {}
+    },
+    {
+        "label": "Incident",
+        "kind": 6,
+        "importPath": "api.main",
+        "description": "api.main",
+        "peekOfCode": "class Incident(BaseModel):\n    dateTime: str\n    description: str\n    severity: str\n# Response Model\nclass IncidentResp(BaseModel):\n    id: str\n    dateTime: str\n    description: str\n    severity: str",
+        "detail": "api.main",
+        "documentation": {}
+    },
+    {
+        "label": "IncidentResp",
+        "kind": 6,
+        "importPath": "api.main",
+        "description": "api.main",
+        "peekOfCode": "class IncidentResp(BaseModel):\n    id: str\n    dateTime: str\n    description: str\n    severity: str\n    reporter: dict\n# CORS settings to allow all origins, methods, and headers.\napp.add_middleware(\n    CORSMiddleware,\n    allow_origins=[\"*\"],",
+        "detail": "api.main",
+        "documentation": {}
+    },
+    {
+        "label": "create_jwt_token",
+        "kind": 2,
+        "importPath": "api.main",
+        "description": "api.main",
+        "peekOfCode": "def create_jwt_token(data: dict):\n    to_encode = data.copy()\n    token = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)\n    return token\n# Function to decode JWT tokens\ndef decode_jwt_token(token: str):\n    try:\n        payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])\n        return payload\n    except JWTError:",
+        "detail": "api.main",
+        "documentation": {}
+    },
+    {
+        "label": "decode_jwt_token",
+        "kind": 2,
+        "importPath": "api.main",
+        "description": "api.main",
+        "peekOfCode": "def decode_jwt_token(token: str):\n    try:\n        payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])\n        return payload\n    except JWTError:\n        raise HTTPException(status_code=401, detail=\"Invalid credentials\")\n# Dependency to get the current user from the token\ndef get_current_user(token: str = Depends(oauth2_scheme)):\n    credentials_exception = HTTPException(\n        status_code=401, detail=\"Could not validate credentials\"",
+        "detail": "api.main",
+        "documentation": {}
+    },
+    {
+        "label": "get_current_user",
+        "kind": 2,
+        "importPath": "api.main",
+        "description": "api.main",
+        "peekOfCode": "def get_current_user(token: str = Depends(oauth2_scheme)):\n    credentials_exception = HTTPException(\n        status_code=401, detail=\"Could not validate credentials\"\n    )\n    return decode_jwt_token(token)\n# Route to get a token and login\n@app.post(\"/token\")\nasync def login_for_access_token(form_data: dict):\n    user = fake_users_db.get(form_data[\"email\"])\n    if user and form_data[\"password\"] == user[\"password\"]:",
+        "detail": "api.main",
+        "documentation": {}
+    },
+    {
+        "label": "delete_incident",
+        "kind": 2,
+        "importPath": "api.main",
+        "description": "api.main",
+        "peekOfCode": "def delete_incident(incident_id: str, current_user: dict = Depends(get_current_user)):\n    for i, incident in enumerate(incidents_db):\n        if incident[\"id\"] == incident_id:\n            deleted_incident = incidents_db.pop(i)\n            return deleted_incident\n    raise HTTPException(status_code=404, detail=\"Incident not found\")",
+        "detail": "api.main",
+        "documentation": {}
+    },
+    {
+        "label": "app",
+        "kind": 5,
+        "importPath": "api.main",
+        "description": "api.main",
+        "peekOfCode": "app = FastAPI()\n# In-memory data store\nincidents_db = []\nclass Incident(BaseModel):\n    dateTime: str\n    description: str\n    severity: str\n# Response Model\nclass IncidentResp(BaseModel):\n    id: str",
+        "detail": "api.main",
+        "documentation": {}
+    },
+    {
+        "label": "incidents_db",
+        "kind": 5,
+        "importPath": "api.main",
+        "description": "api.main",
+        "peekOfCode": "incidents_db = []\nclass Incident(BaseModel):\n    dateTime: str\n    description: str\n    severity: str\n# Response Model\nclass IncidentResp(BaseModel):\n    id: str\n    dateTime: str\n    description: str",
+        "detail": "api.main",
+        "documentation": {}
+    },
+    {
+        "label": "SECRET_KEY",
+        "kind": 5,
+        "importPath": "api.main",
+        "description": "api.main",
+        "peekOfCode": "SECRET_KEY = \"secret-key\"\nALGORITHM = \"HS256\"\n# Create an OAuth2PasswordBearer instance to get the token from the Authorization header\noauth2_scheme = OAuth2PasswordBearer(tokenUrl=\"token\")\n# Sample user data (in-memory database for demonstration purposes)\nfake_users_db = {\n    \"created@admin.com\": {\n        \"name\": \"Admin\",\n        \"email\": \"created@admin.com\",\n        \"password\": \"root\",",
+        "detail": "api.main",
+        "documentation": {}
+    },
+    {
+        "label": "ALGORITHM",
+        "kind": 5,
+        "importPath": "api.main",
+        "description": "api.main",
+        "peekOfCode": "ALGORITHM = \"HS256\"\n# Create an OAuth2PasswordBearer instance to get the token from the Authorization header\noauth2_scheme = OAuth2PasswordBearer(tokenUrl=\"token\")\n# Sample user data (in-memory database for demonstration purposes)\nfake_users_db = {\n    \"created@admin.com\": {\n        \"name\": \"Admin\",\n        \"email\": \"created@admin.com\",\n        \"password\": \"root\",\n    }",
+        "detail": "api.main",
+        "documentation": {}
+    },
+    {
+        "label": "oauth2_scheme",
+        "kind": 5,
+        "importPath": "api.main",
+        "description": "api.main",
+        "peekOfCode": "oauth2_scheme = OAuth2PasswordBearer(tokenUrl=\"token\")\n# Sample user data (in-memory database for demonstration purposes)\nfake_users_db = {\n    \"created@admin.com\": {\n        \"name\": \"Admin\",\n        \"email\": \"created@admin.com\",\n        \"password\": \"root\",\n    }\n}\n# Function to create JWT tokens",
+        "detail": "api.main",
+        "documentation": {}
+    },
+    {
+        "label": "fake_users_db",
+        "kind": 5,
+        "importPath": "api.main",
+        "description": "api.main",
+        "peekOfCode": "fake_users_db = {\n    \"created@admin.com\": {\n        \"name\": \"Admin\",\n        \"email\": \"created@admin.com\",\n        \"password\": \"root\",\n    }\n}\n# Function to create JWT tokens\ndef create_jwt_token(data: dict):\n    to_encode = data.copy()",
+        "detail": "api.main",
+        "documentation": {}
+    }
+]
